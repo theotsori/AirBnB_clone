@@ -32,7 +32,7 @@ class FileStorage:
                 FileStorage.__objects = json.load(f)
                 for key, value in FileStorage.__objects.items():
                     class_name = value["__class__"]
-                    del value["__class__"]
-                    FileStorage.__objects[key] = eval(class_name)(**value)
+                    class_name = globals()[class_name]
+                    FileStorage.__objects[key] = class_name(**value)
         except FileNotFoundError:
             pass
