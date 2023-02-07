@@ -7,11 +7,13 @@ AirBnB Clone Console that emulates the real AirBnB Website.
 
 <h3>How to start</h3>
 To start the command interpreter, run the following command in the terminal:
+
 	./console.py
 
 <h3>How to use</h3>
 The command interpreter provides a prompt ($) where the user can type in commands and arguments.
 Here are a few examples of commands that can be used:
+
 	$ <command> <arg1> <arg2> ...
 
 <h3>Examples</h3>
