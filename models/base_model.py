@@ -2,8 +2,9 @@
 
 import uuid
 from datetime import datetime
-import models
-storage = models.FileStorage()
+from models.engine.file_storage import FileStorage
+
+storage = FileStorage()
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
