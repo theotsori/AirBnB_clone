@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 
 import cmd
-from pickle import OBJ
 import models
 from models.base_model import BaseModel
 
 class HBNBCommand(cmd.Cmd):
+    classes = ["BaseModel"]
+
     prompt = '(hbnb) '
 
     def do_quit(self, args):
@@ -53,34 +54,80 @@ class HBNBCommand(cmd.Cmd):
                 except NameError:
                     print("** class doesn't exist **")
 
-    def do_destory(self, line):
+    def do_destroy(self, line):
         """Delete an instance based on class name and id"""
-        from models.base_model import BaseModel
         if not line:
             print("** class name missing **")
         else:
             args = line.split()
-            if len(args) == 1:
-                print("** attribute name missing **")
-                return
-            elif len(args) == 2:
-                print("** value missing **")
-                return
+            if len(args) < 2:
+                print("** instance id missing **")
             else:
-                if args[2] in ["id", "created_at", "updated_at"]:
-                    print("** these attributes cannot be updated **")
-                    return
-                for key, value in obj.__dict__.items():
-                    if key == args[2]:
-                        if isinstance(value, int):
-                            setattr(obj, key, int(args[3]))
-                        elif isinstance(value, float):
-                            setattr(obj, key, float(args[3]))
-                        else:
-                            setattr(obj, key, str(args[3].strip("\"")))
-                storage.save()
-                print("")
+                class_name = args[0]
+                obj_id = args[1]
+                if class_name in models.classes:
+                    obj = models.classes[class_name].get(obj_id)
+                    if obj:
+                        obj.delete()
+                    else:
+                        print("** no instance found **")
+                else:
+                    print("** class doesn't exist **")
 
+    def do_all(self, args):
+        """
+        Prints all string representation of all instances based or not on the class name.
+        """
+        if args and args[0] not in self.classes:
+            print("** class doesn't exist")
+            return
+
+        objects = models.storage.all()
+        instances = [str(v) for k, v in objects.items()
+                    if not args or args[0] in k.split(".")]
+
+        print("[" + ", ".join(instances) + "]")
+
+    def do_update(self, args):
+        """
+        Updates an instance based on the class name and id by adding or
+        updating attribute (save the change into the JSON file).
+        Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com".
+        """
+        if len(args) < 4:
+            print("** class name missing **")
+            return
+        class_name = args[0]
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+        obj_id = args[1]
+        if obj_id is None:
+            print("** instance id missing **")
+            return
+        obj = models.storage.all()
+        if "{}.{}".format(class_name, obj_id) not in obj:
+            print("** no instance found **")
+            return
+        attr_name = args[2]
+        if attr_name is None:
+            print("** attribute name missing **")
+            return
+        attr_value = args[3].strip('"')
+        if attr_value is None:
+            print("** value missing **")
+            return
+        if attr_name in ["id", "created_at", "updated_at"]:
+            print("** attribute name can't be updated **")
+            return
+        if type(attr_value) not in [str, int, float]:
+            print("** invalid attribute value **")
+            return
+        obj = obj["{}.{}".format(class_name, obj_id)]
+        setattr(obj, attr_name, attr_value)
+        obj.save()
+        print(obj)
+        return
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

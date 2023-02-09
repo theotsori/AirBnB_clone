@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import json
-import os
+from datetime import datetime
 
 class FileStorage:
     """Serializes instances to a JSON file and deserializes JSON file to instances"""
