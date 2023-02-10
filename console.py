@@ -3,7 +3,6 @@
 This is the entry point of the command interpreter
 """
 import cmd
-import models
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -14,7 +13,7 @@ from models.place import Place
 from models.review import Review
 
 classes = {
-    "Basemodel": BaseModel,
+    "BaseModel": BaseModel,
     "User": User,
     "State": State,
     "City": City,
@@ -100,11 +99,11 @@ class HBNBCommand(cmd.Cmd):
         Prints all string representation of all
         instances based or not on the class name.
         """
-        args = args.split
+        args = args.split()
         if len(args) == 0:
             for key in storage.all().keys():
                 print(storage.all()[key])
-        elif args[0] in self.classes:
+        elif args[0] in classes:
             for key in storage.all(args[0]).keys():
                 print(storage.all(args[0])[key])
         else:
@@ -116,19 +115,18 @@ class HBNBCommand(cmd.Cmd):
         updating attribute (save the change into the JSON file).
         Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com".
         """
-        if len(args) < 4:
+        if len(args) == 0:
             print("** class name missing **")
             return
-        class_name = args[0]
-        if class_name not in self.classes:
+        if args[0] not in classes:
             print("** class doesn't exist **")
             return
-        obj_id = args[1]
-        if obj_id is None:
+        if args[0] in classes:
             print("** instance id missing **")
             return
+        obj_id = args[1]
         obj = storage.all()
-        if "{}.{}".format(class_name, obj_id) not in obj:
+        if "{}.{}".format(args[0], obj_id) not in obj:
             print("** no instance found **")
             return
         attr_name = args[2]
@@ -145,7 +143,7 @@ class HBNBCommand(cmd.Cmd):
         if type(attr_value) not in [str, int, float]:
             print("** invalid attribute value **")
             return
-        obj = obj["{}.{}".format(class_name, obj_id)]
+        obj = obj["{}.{}".format(args[0], obj_id)]
         setattr(obj, attr_name, attr_value)
         obj.save()
         print(obj)

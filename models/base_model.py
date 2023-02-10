@@ -2,13 +2,11 @@
 
 import uuid
 from datetime import datetime
-from models.engine.file_storage import FileStorage
-
-storage = FileStorage()
 
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
+        from models import storage
         if kwargs:
             for key, value in kwargs.items():
                 if key != '__class__':
@@ -28,6 +26,7 @@ class BaseModel:
         return f'[{self.__class__.__name__}] ({self.id}) {self.__dict__}'
 
     def save(self):
+        from models import storage
         """
         Updates the public instance attribute
         updated_at with the current datetime
