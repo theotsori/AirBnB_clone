@@ -6,6 +6,7 @@ from models.engine.file_storage import FileStorage
 
 storage = FileStorage()
 
+
 class BaseModel:
     def __init__(self, *args, **kwargs):
         if kwargs:
@@ -24,10 +25,13 @@ class BaseModel:
             storage.new(self)
 
     def __str__(self):
-        return '[{}] ({}) {}'.format(self.__class__.__name__, self.id, self.__dict__)
+        return f'[{self.__class__.__name__}] ({self.id}) {self.__dict__}'
 
     def save(self):
-        """Updates the public instance attribute updated_at with the current datetime"""
+        """
+        Updates the public instance attribute
+        updated_at with the current datetime
+        """
         self.updated_at = datetime.now()
         storage.save()
 

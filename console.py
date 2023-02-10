@@ -3,8 +3,11 @@
 import cmd
 import models
 from models.base_model import BaseModel
+from models.user import User
+
 
 class HBNBCommand(cmd.Cmd):
+
     classes = ["BaseModel"]
 
     prompt = '(hbnb) '
@@ -22,9 +25,12 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, line):
-        """Creates a new instance of a class, saves it, and prints the id"""
+        """
+        Creates a new instance of BaseModel, saves it(to the JSON file)
+        and prints the id. Ex: $create BaseModel
+        """
         if not line:
-            print("** calss name missing **")
+            print("** class name missing **")
         else:
             try:
                 cls = eval(line)
@@ -34,21 +40,25 @@ class HBNBCommand(cmd.Cmd):
             except NameError:
                 print("** class doesn't exist **")
 
-    def do_show(self, line):
-        """Prints the string representation of an instance based on class name and id"""
-        if not line:
+    def do_show(self, args):
+        """
+        Prints the string representation of an instance based
+        on class name and id.Ex $ show BaseModel 1234-1234-1234
+        """
+        if len(args) == 0:
             print("** class name missing **")
         else:
-            args = line.split()
-            if len(args) < 2:
+            args_list = args.split()
+            if len(args_list) < 2:
                 print("** instance id missing **")
             else:
-                cls_name = args[0]
+                class_name = args_list[0]
                 try:
-                    cls = eval(cls_name)
-                    key = "{}.{}".format(cls_name, args[1])
-                    if key in models.storage.all():
-                        print(models.storage.all()[key])
+                    instance_id = args_list[1]
+                    instances = models.storage.all()
+                    key = "{}.{}".format(class_name, instance_id)
+                    if key in instances:
+                        print(instances[key])
                     else:
                         print("** no instance found **")
                 except NameError:
@@ -76,17 +86,16 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """
-        Prints all string representation of all instances based or not on the class name.
+        Prints all string representation of all
+        instances based or not on the class name.
         """
         if args and args[0] not in self.classes:
-            print("** class doesn't exist")
-            return
-
-        objects = models.storage.all()
-        instances = [str(v) for k, v in objects.items()
-                    if not args or args[0] in k.split(".")]
-
-        print("[" + ", ".join(instances) + "]")
+            print("** class doesn't exist **")
+        else:
+            objects = models.storage.all()
+            instances = [str(v) for k, v in objects.items()
+            if not args or args[0] in k.split(".")]
+            print("[" + ", ".join(instances) + "]")
 
     def do_update(self, args):
         """
@@ -128,6 +137,7 @@ class HBNBCommand(cmd.Cmd):
         obj.save()
         print(obj)
         return
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

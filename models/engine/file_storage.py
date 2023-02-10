@@ -3,8 +3,12 @@
 import json
 from datetime import datetime
 
+
 class FileStorage:
-    """Serializes instances to a JSON file and deserializes JSON file to instances"""
+    """
+    Serializes instances to a JSON file and
+    deserializes JSON file to instances
+    """
     __file_path = "file.json"
     __objects = {}
 
@@ -33,6 +37,7 @@ class FileStorage:
     def reload(self):
         """deserialize the JSON file to objects"""
         from models.base_model import BaseModel
+        from models.user import User
         try:
             with open(self.__file_path, 'r', encoding='utf-8') as f:
                 objects = json.load(f)
