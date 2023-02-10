@@ -104,10 +104,15 @@ class HBNBCommand(cmd.Cmd):
             for key in storage.all().keys():
                 print(storage.all()[key])
         elif args[0] in classes:
-            for key in storage.all(args[0]).keys():
-                print(storage.all(args[0])[key])
+            instances = storage.all(args[0])
+            if instances:
+                for key in instances.keys():
+                    print(instances[key])
+            else:
+                print("** no instance found **")
         else:
             print("** class doesn't exist **")
+
 
     def do_update(self, args):
         """
@@ -115,39 +120,35 @@ class HBNBCommand(cmd.Cmd):
         updating attribute (save the change into the JSON file).
         Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com".
         """
+        args = args.split()
         if len(args) == 0:
             print("** class name missing **")
             return
-        if args[0] not in classes:
+        class_name = args[0]
+        if class_name not in classes:
             print("** class doesn't exist **")
             return
-        if args[0] in classes:
+        if len(args) < 2:
             print("** instance id missing **")
             return
         obj_id = args[1]
-        obj = storage.all()
-        if "{}.{}".format(args[0], obj_id) not in obj:
+        instance = storage.get(class_name, obj_id)
+        if instance is None:
             print("** no instance found **")
             return
-        attr_name = args[2]
-        if attr_name is None:
+        if len(args) < 3:
             print("** attribute name missing **")
             return
-        attr_value = args[3].strip('"')
-        if attr_value is None:
+        attr_name = args[2]
+        if attr_name in ["id", "created_at", "updated_at"]:
+            print("** cannot update id, created_at, updated_at **")
+            return
+        if len(args) < 4:
             print("** value missing **")
             return
-        if attr_name in ["id", "created_at", "updated_at"]:
-            print("** attribute name can't be updated **")
-            return
-        if type(attr_value) not in [str, int, float]:
-            print("** invalid attribute value **")
-            return
-        obj = obj["{}.{}".format(args[0], obj_id)]
-        setattr(obj, attr_name, attr_value)
-        obj.save()
-        print(obj)
-        return
+        attr_value = args[3].strip('"')
+        setattr(instance, attr_name, attr_value)
+        storage.save()
 
 
 if __name__ == '__main__':
