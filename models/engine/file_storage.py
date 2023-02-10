@@ -1,7 +1,12 @@
 #!/usr/bin/python3
 
 import json
-from datetime import datetime
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class FileStorage:
@@ -9,39 +14,46 @@ class FileStorage:
     Serializes instances to a JSON file and
     deserializes JSON file to instances
     """
-    __file_path = "file.json"
-    __objects = {}
+    __file_path = str
+    __objects = dict
+
+    def __init__(self, file_path: str):
+        self.__file_path = file_path
+        self.__objects = {}
 
     def all(self):
         """Returns the dictionary __objects"""
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         """Sets in __objects the obj with key <obj class name>.id"""
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        key = "{}.{}".format(type(obj).__name__, obj.id)
+        self.__objects[key] = obj
 
-    def to_dict(self):
-        """returns a dictionary containing all objects in __objects"""
-        new_dict = {}
-        for key, value in self.__objects.items():
-            new_dict[key] = value.to_dict()
-        return new_dict
-
-    def save(self):
+    def save(self) -> None:
         """Serialize the file storage to a JSON file"""
-        objects = self.to_dict()
-        with open(self.__file_path, 'w', encoding='utf-8') as f:
-            json.dump(objects, f)
+        with open(self.__file_path, "w", encoding="utf-8") as file:
+            objects = {key: obj.to_dict() for key, obj in self.__objects.items()}
+            file.write(json.dumps(objects))
 
-    def reload(self):
+    def reload(self) -> None:
         """deserialize the JSON file to objects"""
-        from models.base_model import BaseModel
-        from models.user import User
         try:
-            with open(self.__file_path, 'r', encoding='utf-8') as f:
-                objects = json.load(f)
-            for key, value in objects.items():
-                self.__objects[key] = eval(value["__class__"])(**value)
+            with open(self.__file_path, 'r', encoding='utf-8') as file:
+                objects = json.loads(file.read())
+                for key, value in objects.items():
+                    class_name, obj_id = key.split(".")
+                    if class_name == "User":
+                        self.__objects[key] = User(**value)
+                    elif class_name == "State":
+                        self.__objects[key] = State(**value)
+                    elif class_name == "City":
+                        self.__objects[key] = City(**value)
+                    elif class_name == "Amenity":
+                        self.__objects[key] = Amenity(**value)
+                    elif class_name == "Place":
+                        self.__objects[key] = Place(**value)
+                    elif class_name == "Review":
+                        self.__objects[key] = Review(**value)
         except FileNotFoundError:
             pass
