@@ -49,20 +49,6 @@ class FileStorage:
                 for key, value in objects.items():
                     class_name, obj_id = key.split(".")
                     obj = eval(class_name)(**value)
-                    """
-                    if class_name == "User":
-                        self.__objects[key] = User(**value)
-                    elif class_name == "State":
-                        self.__objects[key] = State(**value)
-                    elif class_name == "City":
-                        self.__objects[key] = City(**value)
-                    elif class_name == "Amenity":
-                        self.__objects[key] = Amenity(**value)
-                    elif class_name == "Place":
-                        self.__objects[key] = Place(**value)
-                    elif class_name == "Review":
-                        self.__objects[key] = Review(**value)
-                    """
                     FileStorage.__objects[key] = obj
         except FileNotFoundError:
             pass

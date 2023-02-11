@@ -10,5 +10,5 @@ from models.place import Place
 from models.review import Review
 
 
-storage = FileStorage('file_path')
+storage = FileStorage('file.json')
 storage.reload()
