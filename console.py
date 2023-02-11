@@ -131,7 +131,16 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
         obj_id = args[1]
-        instance = storage.all().get(obj_id, None)
+        all_objs = storage.all()
+        if class_name not in all_objs:
+            print("** class doesn't exist **")
+            return
+        instances = all_objs[class_name]
+        instance = None
+        for obj in instances:
+            if obj.id == obj_id:
+                instance = obj
+                break
         if instance is None:
             print("** no instance found **")
             return
