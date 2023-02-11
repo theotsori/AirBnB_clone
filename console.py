@@ -104,7 +104,7 @@ class HBNBCommand(cmd.Cmd):
             for key in storage.all().keys():
                 print(storage.all()[key])
         elif args[0] in classes:
-            instances = storage.all(args[0])
+            instances = storage.all()
             if instances:
                 for key in instances.keys():
                     print(instances[key])
@@ -112,7 +112,6 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
         else:
             print("** class doesn't exist **")
-
 
     def do_update(self, args):
         """
@@ -132,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
         obj_id = args[1]
-        instance = storage.get(class_name, obj_id)
+        instance = storage.all().get(obj_id, None)
         if instance is None:
             print("** no instance found **")
             return
