@@ -119,30 +119,43 @@ class HBNBCommand(cmd.Cmd):
         updating attribute (save the change into the JSON file).
         Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com".
         """
-        args = args.split()
-        if len(args) == 0:
+        from models.engine.file_storage import FileStorage
+        arg_list = args.split()
+        if len(arg_list) == 0:
             print("** class name missing **")
             return
-        class_name = args[0]
+
+        class_name = arg_list[0]
         if class_name not in classes:
             print("** class doesn't exist **")
             return
-        if len(args) == 1:
+
+        if len(arg_list) == 1:
             print("** instance id missing **")
             return
-        key = "{}.{}".format(class_name, args[1])
-        if key not in storage.all():
+
+        instance_id = arg_list[1]
+        instance = FileStorage.get(class_name, instance_id)
+        if instance is None:
             print("** no instance found **")
             return
-        if len(args) == 2:
+
+        if len(arg_list) == 2:
             print("** attribute name missing **")
             return
-        if len(args) == 3:
+
+        attr_name = arg_list[2]
+        if attr_name in ["id", "created_at", "updated_at"]:
+            print("** Can't update id, created_at, and updated_at attributes **")
+            return
+
+        if len(arg_list) == 3:
             print("** value missing **")
             return
-        obj = classes[key]
-        setattr(obj, args[2], args[3])
-        storage.save()
+
+        attr_value = arg_list[3].strip('"')
+        setattr(instance, attr_name, attr_value)
+        instance.save()
 
 
 if __name__ == '__main__':
