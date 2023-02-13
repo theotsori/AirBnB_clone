@@ -4,6 +4,7 @@ import unittest
 from models.base_model import BaseModel
 from models.user import User
 
+
 class TestUser(unittest.TestCase):
     def setUp(self):
         self.user = User()
@@ -30,6 +31,7 @@ class TestUser(unittest.TestCase):
     def assertHasAttr(self, obj, attr):
         """Helper function to test if an object has an attribute"""
         self.assertTrue(hasattr(obj, attr))
+
 
 if __name__ == "__main__":
     unittest.main()

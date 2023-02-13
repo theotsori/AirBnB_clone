@@ -4,6 +4,7 @@ import unittest
 from models.base_model import BaseModel
 from models.city import City
 
+
 class TestCity(unittest.TestCase):
     def setUp(self):
         self.city = City()
@@ -22,6 +23,7 @@ class TestCity(unittest.TestCase):
 
     def test_City_name_is_empty_string(self):
         self.assertEqual(self.city.name, '')
+
 
 if __name__ == '__main__':
     unittest.main()

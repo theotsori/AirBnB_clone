@@ -11,6 +11,7 @@ from models.place import Place
 from models.review import Review
 from entry_point import HBNBCommand
 
+
 class TestHBNBCommand(unittest.TestCase):
 
     def setUp(self):
@@ -31,4 +32,3 @@ class TestHBNBCommand(unittest.TestCase):
 
     def test_emptyline_command(self):
         self.assertIsNone(self.hbnb.emptyline())
-

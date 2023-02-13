@@ -10,6 +10,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
+
 class TestFileStorage(unittest.TestCase):
 
     def test_new(self):
@@ -37,6 +38,7 @@ class TestFileStorage(unittest.TestCase):
         storage_all = storage.all()
         state_key = state.__class__.__name__ + "." + state.id
         self.assertIn(state_key, storage_all.keys())
+
 
 if __name__ == '__main__':
     unittest.main()

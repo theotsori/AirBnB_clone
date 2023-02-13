@@ -45,12 +45,6 @@ class TestFileStorage(unittest.TestCase):
         key = "{}.{}".format(state.__class__.__name__, state.id)
         self.assertIn(key, all_objects.keys())
 
-    def tearDown(self):
-        """Cleaning up after the test"""
-        try:
-            os.remove("file.json")
-        except:
-            pass
 
 if __name__ == '__main__':
     unittest.main()

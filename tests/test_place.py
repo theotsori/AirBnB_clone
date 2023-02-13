@@ -4,6 +4,7 @@ import unittest
 from models.base_model import BaseModel
 from models.place import Place
 
+
 class TestPlace(unittest.TestCase):
     def setUp(self):
         self.place = Place()
@@ -23,6 +24,7 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(self.place.latitude, 0.0)
         self.assertEqual(self.place.longitude, 0.0)
         self.assertEqual(self.place.amenity_ids, [])
+
 
 if __name__ == "__main__":
     unittest.main()

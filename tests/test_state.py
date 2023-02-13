@@ -5,6 +5,7 @@ import datetime
 from models.base_model import BaseModel
 from models.state import State
 
+
 class TestState(unittest.TestCase):
     def setUp(self):
         self.state = State()
@@ -23,6 +24,7 @@ class TestState(unittest.TestCase):
 
     def assertHasAttr(self, obj, attr):
         self.assertTrue(hasattr(obj, attr), f"{obj} has no attribute {attr}")
+
 
 if __name__ == "__main__":
     unittest.main()
