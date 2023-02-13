@@ -33,8 +33,8 @@ class FileStorage:
     def save(self) -> None:
         """Serialize the file storage to a JSON file"""
         objects_dict = {}
-        for key, value in FileStorage.__objects.items():
-            objects_dict[key] = value.to_dict()
+        for key in FileStorage.__objects:
+            objects_dict[key] = FileStorage.__objects[key].to_dict()
 
         with open(FileStorage.__file_path, "w", encoding="utf-8") as file:
             json.dump(objects_dict, file)
@@ -44,11 +44,9 @@ class FileStorage:
         from models.base_model import BaseModel
         try:
             with open(FileStorage.__file_path, 'r', encoding='utf-8') as file:
-                FileStorage.__objects = {}
-                objects = json.loads(file.read())
-                for key, value in objects.items():
-                    class_name, obj_id = key.split(".")
-                    obj = eval(class_name)(**value)
+                objects = json.load(file)
+                for key in objects:
+                    obj = BaseModel(**objects[key])
                     FileStorage.__objects[key] = obj
         except FileNotFoundError:
             pass
