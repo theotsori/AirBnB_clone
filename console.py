@@ -127,35 +127,21 @@ class HBNBCommand(cmd.Cmd):
         if class_name not in classes:
             print("** class doesn't exist **")
             return
-        if len(args) < 2:
+        if len(args) == 1:
             print("** instance id missing **")
             return
-        obj_id = args[1]
-        all_objs = storage.all()
-        if class_name not in all_objs:
-            print("** class doesn't exist **")
-            return
-        instances = all_objs[class_name]
-        instance = None
-        for obj in instances:
-            if obj.id == obj_id:
-                instance = obj
-                break
-        if instance is None:
+        key = "{}.{}".format(class_name, args[1])
+        if key not in storage.all():
             print("** no instance found **")
             return
-        if len(args) < 3:
+        if len(args) == 2:
             print("** attribute name missing **")
             return
-        attr_name = args[2]
-        if attr_name in ["id", "created_at", "updated_at"]:
-            print("** cannot update id, created_at, updated_at **")
-            return
-        if len(args) < 4:
+        if len(args) == 3:
             print("** value missing **")
             return
-        attr_value = args[3].strip('"')
-        setattr(instance, attr_name, attr_value)
+        obj = classes[key]
+        setattr(obj, args[2], args[3])
         storage.save()
 
 
