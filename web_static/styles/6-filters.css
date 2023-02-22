@@ -10,7 +10,7 @@
     position: relative;
 }
 
-.locations, .amenities {
+.filters .locations, .amenities {
     height: 100%;
     width: 25%;
     vertical-align: top;
@@ -22,25 +22,25 @@
     align-items: center;
 }
 
-.locations {
+.filters .locations {
     border-right: 1px solid #DDDDDD;
 }
 
-.locations h3,
+.filters .locations h3,
 .amenities h3 {
     font-weight: 600;
     font-size: 16px;
     margin: 0;
 }
 
-.locations h4,
+.filters .locations h4,
 .amenities h4 {
     font-weight: 400;
     font-size: 14px;
     margin: 0;
 }
 
-.locations ul,
+.filters .locations ul,
 .amenities ul {
     list-style: none;
     padding: 0;
@@ -48,7 +48,7 @@
     text-align: left;
 }
 
-.locations li,
+.filters .locations li,
 .amenities li {
     margin-bottom: 8px;
 }
@@ -97,7 +97,7 @@
     padding: 2px;
 }
 
-.locations:hover .popover,
+.filters .locations:hover .popover,
 .amenities:hover .popover {
     display: block;
 }
