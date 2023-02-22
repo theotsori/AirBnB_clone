@@ -92,22 +92,29 @@ article h2{
 /* Amenities */
 article .amenities {
 	margin-top: 40px;
+	height: 90px;
+	width: 100%;
 }
   
-.places .amenities h2 {
+article .amenities h2 {
 	font-size: 16px;
 	border-bottom: 1px solid #ddd;
+	text-align: left;
+	margin-left: 0;
+	padding-left: 0;
+	width: 100%;
 }
   
-.places .amenities ul {
+article .amenities ul {
 	list-style: none;
-	padding: 0;
 	margin: 0;
+	padding-right: 270px;
 }
   
-.places .amenities li {
+article .amenities li {
 	margin-bottom: 10px;
 	font-size: 14px;
+	margin: 0;
 }
 
 .pet-friendly {
@@ -118,7 +125,7 @@ article .amenities {
 	margin-right: 10px;
 	background-repeat: no-repeat;
 	background-position: center;
-	background-size: contain;
+	background-size: 20px;
 }
 
 .tv {
@@ -129,7 +136,7 @@ article .amenities {
 	margin-right: 10px;
 	background-repeat: no-repeat;
 	background-position: center;
-	background-size: contain;
+	background-size: 20px;
 }
 
 .wifi {
@@ -140,25 +147,28 @@ article .amenities {
 	margin-right: 10px;
 	background-repeat: no-repeat;
 	background-position: center;
-	background-size: contain;
+	background-size: 20px;
 }
   
 /* Reviews */
 .reviews {
 	margin-top: 40px;
+	width: 100%;
 }
   
 .reviews h2 {
 	font-size: 16px;
 	border-bottom: 1px solid #ddd;
 	padding-bottom: 10px;
-	color: #666;
+	text-align: left;
+	margin-left: 0;
+	padding-left: 0;
 }
   
 .reviews ul {
 	list-style: none;
-	padding: 0;
-	margin: 0;
+	padding-left: 0;
+	margin-left: 0;
 }
   
 .reviews li {
